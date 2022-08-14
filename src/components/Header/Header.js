@@ -1,4 +1,4 @@
-import { Link } from 'react-roter-dom'
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
     return (
