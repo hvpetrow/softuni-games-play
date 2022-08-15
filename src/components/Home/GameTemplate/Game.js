@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 export const Game = ({game}) => {
     return (
         <div className="game">
             <div className="image-wrap">
-                <img src={game.imageUrl} />
+                <img src={game.imageUrl} alt="game img" />
             </div>
             <h3>{game.title}</h3>
             <div className="rating">
@@ -13,9 +15,9 @@ export const Game = ({game}) => {
                 <span>☆</span>
             </div>
             <div className="data-buttons">
-                <a href="#" className="btn details-btn">
+                <Link to={`/details/${game._id}`} className="btn details-btn">
                     Details
-                </a>
+                </Link>
             </div>
         </div>
     );

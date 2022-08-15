@@ -1,20 +1,40 @@
-export const Details = () => {
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+export const Details = ({ games,addComment }) => {
+    const { gameId } = useParams();
+    const [comment,setComment] = useState({
+        username: '',
+        comment: ''
+    });
+
+    const game = games.find(g => g._id === gameId);//game should coming from server(request)
+
+    const addCommentHandler = (e) => {
+        e.preventDefault();
+        addComment(gameId,`${comment.username}: ${comment.comment}`);
+        console.log(comment);
+    };
+
+    const onChange = (e) => {
+        setComment(state => ({
+            ...state,
+            [e.target.name]: e.target.value
+        }))
+    }
+
     return (
         <section id="game-details">
             <h1>Game Details</h1>
             <div className="info-section">
                 <div className="game-header">
-                    <img className="game-img" src="images/MineCraft.png" />
-                    <h1>Bright</h1>
-                    <span className="levels">MaxLevel: 4</span>
-                    <p className="type">Action, Crime, Fantasy</p>
+                    <img className="game-img" src={game.imageUrl} alt="game-img" />
+                    <h1>{game.title}</h1>
+                    <span className="levels">MaxLevel: {game.maxLevel}</span>
+                    <p className="type">{game.category}</p>
                 </div>
                 <p className="text">
-                    Set in a world where fantasy creatures live side by side with humans. A
-                    human cop is forced to work with an Orc to find a weapon everyone is
-                    prepared to kill for. Set in a world where fantasy creatures live side
-                    by side with humans. A human cop is forced to work with an Orc to find a
-                    weapon everyone is prepared to kill for.
+                    {game.summary}
                 </p>
                 {/* Bonus ( for Guests and Users ) */}
                 <div className="details-comments">
@@ -45,16 +65,23 @@ export const Details = () => {
             {/* Add Comment ( Only for logged-in users, which is not creators of the current game ) */}
             <article className="create-comment">
                 <label>Add new comment:</label>
-                <form className="form">
+                <form className="form" onSubmit={addCommentHandler}>
+                    <input
+                        type="text"
+                        name='username'
+                        placeholder='John Doe'
+                        onChange={onChange}
+                        value={comment.username} />
                     <textarea
                         name="comment"
                         placeholder="Comment......"
-                        defaultValue={""}
+                        onChange={onChange}
+                        value={comment.comment}
                     />
                     <input
                         className="btn submit"
                         type="submit"
-                        defaultValue="Add Comment"
+                        value="Add Comment"
                     />
                 </form>
             </article>

@@ -2,6 +2,7 @@ import { Game } from './GameTemplate/Game';
 
 export const Home = ({games}) => {
 
+   
 
     return (
         <section id="welcome-world">
