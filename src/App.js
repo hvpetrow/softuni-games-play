@@ -37,6 +37,13 @@ function App() {
         })
     }
 
+    const addGameHandler = (gameData) => {
+        setGames(state => [
+            ...state,
+            gameData
+        ])
+    }
+
     return (
         <div id="box">
             <Header />
@@ -45,7 +52,7 @@ function App() {
                     <Route path='/' element={<Home games={games} />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
-                    <Route path='/create' element={<Create />} />
+                    <Route path='/create' element={<Create addGameHandler={addGameHandler} />} />
                     <Route path='/edit' element={<Edit />} />
                     <Route path='/details' element={<Details />} />
                     <Route path='/catalog' element={<Catalog games={games} />} />
