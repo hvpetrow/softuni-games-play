@@ -1,14 +1,7 @@
-import { useEffect, useState } from 'react';
-import * as gameService from '../../services/service';
 import { Game } from './GameTemplate/Game';
 
-export const Home = () => {
-    const [games, setGames] = useState([]);
+export const Home = ({games}) => {
 
-    useEffect(() => {
-        gameService.getAll()
-            .then(result => setGames(result));
-    }, [games]);
 
     return (
         <section id="welcome-world">
