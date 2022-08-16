@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export const Details = ({ games,addComment }) => {
+export const Details = ({ games, addComment }) => {
     const { gameId } = useParams();
-    const [comment,setComment] = useState({
+    const [comment, setComment] = useState({
+        username: '',
+        comment: ''
+    });
+
+    const [err, setErr] = useState({
         username: '',
         comment: ''
     });
@@ -12,7 +17,7 @@ export const Details = ({ games,addComment }) => {
 
     const addCommentHandler = (e) => {
         e.preventDefault();
-        addComment(gameId,`${comment.username}: ${comment.comment}`);
+        addComment(gameId, `${comment.username}: ${comment.comment}`);
     };
 
     const onChange = (e) => {
@@ -20,6 +25,22 @@ export const Details = ({ games,addComment }) => {
             ...state,
             [e.target.name]: e.target.value
         }))
+    }
+
+    const validateUsername = (e) => {
+        const username = e.target.value;
+        let errorMessage = '';
+
+        if (username.length < 4) {
+            errorMessage = 'Username must be longer than 4 characters';
+        } else if (username.length > 10) {
+            errorMessage = 'Username must be shorter than 10 characters';
+        }
+
+        setErr(state => ({
+            ...state,
+            username: errorMessage
+        }));
     }
 
     return (
@@ -39,14 +60,14 @@ export const Details = ({ games,addComment }) => {
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                    { game.comments
+                        {game.comments
                             ? game.comments.map(c =>
                                 <li className="comment">
                                     <p>{c} </p>
                                 </li>
-                                )
+                            )
                             : <p className="no-comment">No comments.</p>
-                    }
+                        }
                     </ul>
                 </div>
 
@@ -70,7 +91,13 @@ export const Details = ({ games,addComment }) => {
                         name='username'
                         placeholder='John Doe'
                         onChange={onChange}
-                        value={comment.username} />
+                        onBlur={validateUsername}
+                        value={comment.username}
+                    />
+
+                    {err.username &&
+                        <div style={{color: 'red'}}> {err.username}</div>}
+
                     <textarea
                         name="comment"
                         placeholder="Comment......"
