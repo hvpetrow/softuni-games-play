@@ -11,15 +11,22 @@ import { Create } from './components/Create/Create';
 import { Edit } from './components/Edit/Edit';
 import { Details } from './components/Details/Details';
 import { Catalog } from './components/Catalog/Catalog';
+import { AuthContext } from './contexts/AuthContext';
+import { Logout } from './components/Logout';
 
 const Register = lazy(() => import('./components/Catalog/Catalog'))
 
 function App() {
     const [games, setGames] = useState([]);
+    const [auth,setAuth] = useState({});
+
+    const userLogin = (authData) => {
+        setAuth(authData);
+    }
 
     useEffect(() => {
         gameService.getAll()
-            .then(result => setGames(result));
+            .then(result => {setGames(result)});
     }, []);
 
     const addComment = (gameId, comment) => {
@@ -43,7 +50,9 @@ function App() {
         ])
     }
 
+
     return (
+        <AuthContext.Provider value={{auth,userLogin}}>
         <div id="box">
             <Header />
             <main id="main-content">
@@ -59,9 +68,12 @@ function App() {
                     <Route path='/details' element={<Details />} />
                     <Route path='/catalog' element={<Catalog games={games} />} />
                     <Route path='/details/:gameId' element={<Details games={games} addComment={addComment} />} />
+                    <Route path='/logout' element= {<Logout />}/>
                 </Routes>
             </main>
         </div>
+        </AuthContext.Provider>
+
 
     );
 }

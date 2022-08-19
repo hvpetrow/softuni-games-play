@@ -1,6 +1,7 @@
-const baseUrl = 'http://localhost:3030'
+import * as request from "./requester";
 
-export const getAll = () => {
-  return fetch(`${baseUrl}/data/games`)
-    .then(res => res.json());
+const baseUrl = 'http://localhost:3030';
+
+export const getAll = async () => {
+  return request.get(`${baseUrl}/data/games`);
 }
