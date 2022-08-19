@@ -24,6 +24,10 @@ function App() {
         setAuth(authData);
     }
 
+    const userLogout = () => {
+        setAuth({});
+    }
+
     useEffect(() => {
         gameService.getAll()
             .then(result => {setGames(result)});
@@ -52,7 +56,7 @@ function App() {
 
 
     return (
-        <AuthContext.Provider value={{auth,userLogin}}>
+        <AuthContext.Provider value={{auth,userLogin,userLogout}}>
         <div id="box">
             <Header />
             <main id="main-content">

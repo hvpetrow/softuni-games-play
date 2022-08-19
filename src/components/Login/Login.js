@@ -14,17 +14,17 @@ export const Login = () => {
             password
         } = Object.fromEntries(new FormData(e.target));
 
-        authService.login(email,password)
-        .then(authData => {
-            userLogin(authData);
-            navigate('/');
-        })
-        .catch((error) => {
-            const loginError = new Error('username or password don\'t match')
-            console.log(error);
-            alert(loginError.message);
-            navigate('/404');
-        })
+        authService.login(email, password)
+            .then(authData => {
+                userLogin(authData);
+                navigate('/');
+            })
+            .catch((error) => {
+                const loginError = new Error('username or password don\'t match')
+                console.log(error);
+                alert(loginError.message);
+                navigate('/404');
+            })
     };
 
     return (
