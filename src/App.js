@@ -13,12 +13,13 @@ import { Details } from './components/Details/Details';
 import { Catalog } from './components/Catalog/Catalog';
 import { AuthContext } from './contexts/AuthContext';
 import { Logout } from './components/Logout';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 const Register = lazy(() => import('./components/Register/Register'));
 
 function App() {
     const [games, setGames] = useState([]);
-    const [auth,setAuth] = useState({});
+    const [auth,setAuth] = useLocalStorage('auth',{});
 
     const userLogin = (authData) => {
         setAuth(authData);
