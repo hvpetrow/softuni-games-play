@@ -14,13 +14,16 @@ import { Catalog } from './components/Catalog/Catalog';
 import { AuthContext } from './contexts/AuthContext';
 import { Logout } from './components/Logout';
 
-const Register = lazy(() => import('./components/Catalog/Catalog'))
+const Register = lazy(() => import('./components/Register/Register'));
 
 function App() {
     const [games, setGames] = useState([]);
     const [auth,setAuth] = useState({});
 
     const userLogin = (authData) => {
+        setAuth(authData);
+    }
+    const userRegister = (authData) => {
         setAuth(authData);
     }
 
@@ -56,7 +59,7 @@ function App() {
 
 
     return (
-        <AuthContext.Provider value={{auth,userLogin,userLogout}}>
+        <AuthContext.Provider value={{auth,userLogin,userRegister,userLogout}}>
         <div id="box">
             <Header />
             <main id="main-content">

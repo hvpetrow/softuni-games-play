@@ -20,3 +20,7 @@ export const logout = async (accessToken) => {
         throw error;
     }
 }
+
+export const register = (email,password) => {
+    return request.post(`${baseUrl}/register`, { email, password });
+}
