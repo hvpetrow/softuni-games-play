@@ -10,12 +10,11 @@ export const login = async (email, password) => {
 export const logout = async (accessToken) => {
     try {
         const response = await fetch(`${baseUrl}/logout`, {
+            method:'GET',
             headers: {
                 'X-Authorization': accessToken
             }
         });
-
-        
 
         return response;
     } catch (error) {
@@ -26,3 +25,4 @@ export const logout = async (accessToken) => {
 export const register = (email,password) => {
     return request.post(`${baseUrl}/register`, { email, password });
 }
+

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export const Details = ({ games, addComment }) => {
     const { gameId } = useParams();
@@ -73,12 +73,12 @@ export const Details = ({ games, addComment }) => {
 
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
                 <div className="buttons">
-                    <a href="#" className="button">
+                    <Link to={`/${gameId}/edit`} className="button">
                         Edit
-                    </a>
-                    <a href="#" className="button">
+                    </Link>
+                    <Link to={`/${gameId}/delete`} className="button">
                         Delete
-                    </a>
+                    </Link>
                 </div>
             </div>
             {/* Bonus */}
@@ -96,7 +96,7 @@ export const Details = ({ games, addComment }) => {
                     />
 
                     {err.username &&
-                        <div style={{color: 'red'}}> {err.username}</div>}
+                        <div style={{ color: 'red' }}> {err.username}</div>}
 
                     <textarea
                         name="comment"

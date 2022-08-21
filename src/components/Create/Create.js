@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GameContext } from "../../contexts/GameContext";
 
-export const Create = ({addGameHandler}) => {
+import { addGame } from "../../services/gameService";
+
+export const Create = () => {
+    const { addGameHandler } = useContext(GameContext);
     const navigate = useNavigate();
 
     const [values, setValues] = useState({
@@ -22,10 +26,11 @@ export const Create = ({addGameHandler}) => {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        const gameData = {...values,_id: Math.random()};
+        const gameData = { ...values, _id: Math.random() };
 
-        addGameHandler(gameData);
-        
+        addGame(gameData)
+            .then(result => addGameHandler(result));
+            
         navigate('/');
     }
 
