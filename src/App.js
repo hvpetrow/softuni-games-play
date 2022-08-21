@@ -11,30 +11,16 @@ import { Create } from './components/Create/Create';
 import { Edit } from './components/Edit/Edit';
 import { Details } from './components/Details/Details';
 import { Catalog } from './components/Catalog/Catalog';
-import { AuthContext } from './contexts/AuthContext';
+import { AuthContext,AuthProvider } from './contexts/AuthContext';
 import { GameContext } from './contexts/GameContext';
 
 import { Logout } from './components/Logout';
-import { useLocalStorage } from './hooks/useLocalStorage';
 
 const Register = lazy(() => import('./components/Register/Register'));
 
 function App() {
     const [games, setGames] = useState([]);
-    const [auth, setAuth] = useLocalStorage('auth', {});
-
-    const userLogin = (authData) => {
-        setAuth(authData);
-    }
-
-    const userRegister = (authData) => {
-        setAuth(authData);
-    }
-
-
-    const userLogout = () => {
-        setAuth({});
-    }
+   
 
     const editGameHandler = (editedGame) => {
         setGames(games => {
@@ -73,7 +59,7 @@ function App() {
 
 
     return (
-        <AuthContext.Provider value={{ auth, userLogin, userRegister, userLogout }}>
+        <AuthProvider>
             <GameContext.Provider value={{ addGameHandler, editGameHandler }}>
                 <div id="box">
                     <Header />
@@ -95,7 +81,7 @@ function App() {
                     </main>
                 </div>
             </GameContext.Provider>
-        </AuthContext.Provider>
+        </AuthProvider>
 
 
     );
