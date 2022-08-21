@@ -1,6 +1,18 @@
+import { useContext, useEffect } from 'react';
+import { GameContext } from '../../contexts/GameContext';
 import { Game } from './GameTemplate/Game';
+import * as gameService from '../../services/gameService';
 
-export const Home = ({games}) => {
+export const Home = () => {
+    const { games,setGames } = useContext(GameContext);
+    
+    useEffect(() => {
+        gameService.getAll()
+            .then(result => {
+                console.log(games);
+                 setGames(result) });
+    }, []);
+
     return (
         <section id="welcome-world">
             <div className="welcome-message">
