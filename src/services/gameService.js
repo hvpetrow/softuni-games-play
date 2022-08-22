@@ -16,5 +16,9 @@ export const addGame = async (game) => {
 }
 
 export const editGame = async (game) => {
-  return request.put(`${baseUrl}/data/games/${game._id}`,game);
+  return request.put(`${baseUrl}/data/games/${game._id}`,game); 
+}
+
+export const remove = async (gameId) => {
+  return request.remove(`${baseUrl}/data/games/${gameId}`);
 }
