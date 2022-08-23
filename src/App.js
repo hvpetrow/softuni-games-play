@@ -14,11 +14,12 @@ import { AuthProvider } from './contexts/AuthContext';
 import { GameProvider } from './contexts/GameContext';
 
 import { Logout } from './components/Logout';
+import PrivateRoute from './components/common/PrivateRoute';
+import RouteGuard from './components/common/RouteGuard';
 
 const Register = lazy(() => import('./components/Register/Register'));
 
 function App() {
-    
     return (
         <AuthProvider>
             <GameProvider>
@@ -32,12 +33,17 @@ function App() {
                                 <Suspense fallback={<span>Loading...</span>}>
                                     <Register />
                                 </Suspense>} />
-                            <Route path='/create' element={<Create />} />
-                            <Route path='/:gameId/edit' element={<Edit />} />
-                            <Route path='/details' element={<Details />} />
+                            <Route path='/create' element={(
+                                <PrivateRoute>
+                                    <Create />
+                                </PrivateRoute>)} />
+                            <Route element={<RouteGuard />}>
+                                <Route path='/:gameId/edit' element={<Edit />} />
+                                <Route path='/logout' element={<Logout />} />
+                            </Route>
                             <Route path='/catalog' element={<Catalog />} />
+                            <Route path='/details' element={<Details />} />
                             <Route path='/details/:gameId' element={<Details />} />
-                            <Route path='/logout' element={<Logout />} />
                         </Routes>
                     </main>
                 </div>
