@@ -1,11 +1,14 @@
 import { createContext, useEffect, useState } from "react";
+import { getByGameId } from "../services/commentService";
 import * as gameService from '../services/gameService';
 
 export const GameContext = createContext();
 
 export const GameProvider = ({children}) => {
     const [games, setGames] = useState([]);
+
    
+
     const useGetAllGames =() =>{
         useEffect(() => {
             gameService.getAll()
@@ -21,6 +24,9 @@ export const GameProvider = ({children}) => {
         });
     }
 
+    const selectGame = (gameId) => {
+        return games.find(g => g._id === gameId);
+    }
 
     const addComment = (gameId, comment) => {
         setGames(state => {
@@ -44,7 +50,7 @@ export const GameProvider = ({children}) => {
     }
 
     return (
-        <GameContext.Provider value={{ addGameHandler, editGameHandler,addComment,useGetAllGames,setGames,games }}>
+        <GameContext.Provider value={{ addGameHandler, editGameHandler,addComment,useGetAllGames,setGames,games,selectGame }}>
             {children}
         </GameContext.Provider>
     );

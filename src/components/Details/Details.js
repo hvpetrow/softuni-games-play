@@ -1,23 +1,28 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
 import { GameContext } from '../../contexts/GameContext';
-import { create } from '../../services/commentService';
+import { create, getByGameId } from '../../services/commentService';
 import * as gameService from "../../services/gameService";
 
 
 export const Details = () => {
-    const { setGames,games, addComment } = useContext(GameContext);
+    const { setGames, games, addComment } = useContext(GameContext);
+    const [ currentGame, setCurrentGame ] = useState({});
+    const { auth } = useContext(AuthContext);
     const { gameId } = useParams();
     const navigate = useNavigate();
 
-    const game = games.find(g => g._id === gameId);//game should coming from server(request)
+
+    // const game = games.find(g => g._id === gameId);//game should coming from server(request)
 
     useEffect(() => {
         gameService.getOne(gameId)
             .then(result => {
-
-            })
-    })
+                setCurrentGame(result) });
+    }, [gameId]);
+    
+    const isOwner = currentGame._ownerId === auth._id;
     // const [comment, setComment] = useState({
     //     username: '',
     //     comment: ''
@@ -85,20 +90,20 @@ export const Details = () => {
             <h1>Game Details</h1>
             <div className="info-section">
                 <div className="game-header">
-                    <img className="game-img" src={game.imageUrl} alt="game-img" />
-                    <h1>{game.title}</h1>
-                    <span className="levels">MaxLevel: {game.maxLevel}</span>
-                    <p className="type">{game.category}</p>
+                    <img className="game-img" src={currentGame.imageUrl} alt="game-img" />
+                    <h1>{currentGame.title}</h1>
+                    <span className="levels">MaxLevel: {currentGame.maxLevel}</span>
+                    <p className="type">{currentGame.category}</p>
                 </div>
                 <p className="text">
-                    {game.summary}
+                    {currentGame.summary}
                 </p>
 
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                        {game.comments
-                            ? game.comments.map(c =>
+                        {currentGame.comments
+                            ? currentGame.comments.map(c =>
                                 <li key={c._id} className="comment">
                                     <p>{c} </p>
                                 </li>
@@ -109,14 +114,16 @@ export const Details = () => {
                 </div>
 
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
-                <div className="buttons">
-                    <Link to={`/${gameId}/edit`} className="button">
-                        Edit
-                    </Link>
-                    <button onClick={gameDeleteHandler} className="button">
-                        Delete
-                    </button>
-                </div>
+                {isOwner &&
+                    <div className="buttons">
+                        <Link to={`/${gameId}/edit`} className="button">
+                            Edit
+                        </Link>
+                        <button onClick={gameDeleteHandler} className="button">
+                            Delete
+                        </button>
+                    </div>
+                }
             </div>
             {/* Bonus */}
             {/* Add Comment ( Only for logged-in users, which is not creators of the current game ) */}

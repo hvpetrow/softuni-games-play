@@ -6,7 +6,6 @@ export const getAll = async () => {
   return request.get(`${baseUrl}/data/games`);
 }
 
-
 export const getOne = async (gameId) => {
   return request.get(`${baseUrl}/data/games/${gameId}`);
 }
